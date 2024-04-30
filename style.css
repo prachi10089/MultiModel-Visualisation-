@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background-color: #a2d7e6;
+    background-image: url(https://t4.ftcdn.net/jpg/04/49/87/85/360_F_449878585_YSsCp0KDf1GMkY8J5BVTuFHnWGJqn0TU.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.chatBot {
+    border: 3px solid #2F8D46;
+    border-radius: 20px; /* Increased border radius for a rounded look */
+    margin: 50px auto;
+    overflow: hidden;
+    width: 600px; /* Increased width for more space */
+    overflow-y: clip;
+    height: auto;
+    background-color: #ffffff; /* Changed background color to white */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); /* Increased box shadow for depth */
+}
+
+header {
+    background-color: #016b65;
+    text-align: center;
+    padding: 20px 0; /* Increased padding for better spacing */
+    border-radius: 20px 20px 0 0;
+}
+
+header h2 {
+    color: #fff;
+    margin: 0;
+    font-size: 24px; /* Increased font size for better visibility */
+}
+
+.chatbox {
+    padding: 20px; /* Increased padding for better spacing */
+    list-style: none;
+    overflow-y: auto;
+    height: 400px; /* Reduced height for better proportions */
+}
+
+.chatbox li {
+    margin-bottom: 20px; /* Increased margin bottom for better separation */
+}
+
+.chat p {
+    padding: 15px; /* Increased padding for better spacing */
+    border-radius: 15px; /* Increased border radius for a rounded look */
+    max-width: 80%; /* Increased max width for better readability */
+    word-wrap: break-word;
+}
+
+.chat-outgoing p {
+    background-color: #162887;
+    align-self: flex-end;
+    color: #fff;
+}
+
+.chat-incoming p {
+    background-color: #eaeaea;
+    color: #333; /* Changed text color for better contrast */
+}
+
+.chat-input {
+    padding: 20px;
+    border-top: 1px solid #ccc;
+}
+
+.chat-input textarea {
+    width: calc(100% - 40px); /* Adjusted width for better alignment */
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+    resize: none;
+    outline: none;
+    overflow-y: scroll;
+    background-color: #f9f9f9; /* Changed background color for better contrast */
+    font-size: 16px;
+    color: #333; /* Changed text color for better contrast */
+    font-weight: 600;
+    margin-top: -10px;
+    margin-left: -15px;
+    height: 71px;
+}
+
+#cross {
+    float: right;
+    position: relative;
+    top: -38px;
+    left: -15px;
+    cursor: pointer;
+    color: white;
+    font-weight: bolder;
+    font-size: 28px;
+}
+
+#cross:hover {
+    color: red;
+    transition: all .5s;
+}
+
+.chatbox .chat p.error {
+    color: #ffffff;
+    background-color: #ff3737e8;
+}
+
+#sendBTN,
+#generatePlotBTN,
+#speechToTextBTN {
+    width: calc(50% - 10px); /* Adjusted width for better alignment */
+    padding: 15px;
+    border: 0;
+    outline: none;
+    font-size: 18px; /* Reduced font size for better proportion */
+    font-weight: 600;
+    border-radius: 15px;
+    background-color: #016b65;
+    cursor: pointer;
+    color: white;
+    margin-top: 20px; /* Increased margin top for better separation */
+}
+
+#sendBTN:hover,
+#generatePlotBTN:hover,
+#speechToTextBTN:hover {
+    background-color: #25733f; /* Darken the background color on hover */
+}
+
+#sendBTN:active,
+#generatePlotBTN:active,
+#speechToTextBTN:active {
+    background-color: #1e5c33; /* Darken the background color on click */
+}
+
+.lastMessage {
+    margin-top: 50px;
+    font-size: 35px;
+    font-weight: 600;
+    color: darkgreen;
+    margin-left: 550px;
+}

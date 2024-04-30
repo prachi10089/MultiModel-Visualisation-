@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=1">
+<title>Home</title>
+<style>
+    *,*:after,*:before{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+}
+body{
+	font-family: arial;
+	font-size: 16px;
+	margin: 0;
+	background:linear-gradient(to right bottom, #d13cff, #031f6a);
+	color: #fff;
+	display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.voice_to_text{
+  width: 600px;
+  text-align: center;
+}
+h1{
+	color: #fff;
+	font-size: 50px;
+}
+#convert_text{
+  width: 100%;
+  height: 200px;
+  border-radius: 10px;
+  resize: none;
+  padding: 10px;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+button, select{
+	padding: 12px 20px;
+  background: #ed7c7c;
+  border: 0;
+  color: #000000;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin: 0 10px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="voice_to_text"> 
+    <h1>Voice to Text Converter</h1>
+    <textarea id="convert_text"></textarea>
+    <select id="language_select" style="font-size: 18px;">
+        <option value="en-US">English</option>
+        <option value="hi-IN">Hindi</option>
+        <option value="kn-IN">Kannada</option>
+        <option value="te-IN">Telugu</option>
+        <option value="ta-IN">Tamil</option>
+        <option value="es-ES">Spanish</option>
+    </select>
+    <button id="start_record">🔉</button>
+    <button id="stop_record">🔇</button>
+</div>
+
+<script>
+document.getElementById('start_record').addEventListener('click', startRecording);
+document.getElementById('stop_record').addEventListener('click', stopRecording);
+
+let recognition;
+
+function startRecording() {
+    window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+    recognition = new SpeechRecognition();
+    recognition.interimResults = true;
+    
+    const language = document.getElementById('language_select').value;
+    recognition.lang = language;
+
+    recognition.addEventListener('result', e => {
+        const transcript = Array.from(e.results)
+            .map(result => result[0])
+            .map(result => result.transcript)
+            .join('');
+
+        document.getElementById("convert_text").value = transcript;
+        console.log(transcript);
+    });
+    
+    recognition.start();
+}
+
+function stopRecording() {
+    if (recognition) {
+        recognition.stop();
+    }
+}
+</script>
+
+</body>
+</html>

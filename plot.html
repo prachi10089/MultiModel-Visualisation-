@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chatbot Plot Generator</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      background-image: url(https://img.freepik.com/premium-vector/diagram-graph-growth-stock-market-profits-economic-recovery-stock-business-chart_546559-1613.jpg);
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #b6ebd2;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #2f2d2d;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    button:hover {
+      background-color: #000000;
+    }
+
+    canvas {
+      margin-top: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    #recommendation {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Plot Generator</h1>
+  
+    <label for="data-input">Enter Data (comma-separated):</label>
+    <input type="text" id="data-input">
+    <label for="plot-type">Select Plot Type:</label>
+    <select id="plot-type">
+      <option value="bar">Bar</option>
+      <option value="line">Line</option>
+      <option value="radar">Radar</option>
+      <option value="doughnut">Doughnut</option>
+      <option value="pie">Pie</option>
+      <option value="polarArea">Polar Area</option>
+    </select>
+    <label for="x-label">X Axis Label:</label>
+    <input type="text" id="x-label" placeholder="X Axis Label">
+    <label for="y-label">Y Axis Label:</label>
+    <input type="text" id="y-label" placeholder="Y Axis Label">
+    <button onclick="generatePlot()">Generate Plot</button>
+    <button onclick="document.getElementById('file-input').click()">Upload CSV</button>
+    <input type="file" id="file-input" style="display: none;" accept=".csv" onchange="handleFileUpload(event)">
+    <canvas id="myChart"></canvas>
+    <button onclick="summarizePlot()">Summarize Plot</button>
+    <div id="summary"></div>
+    <button onclick="recommendPlot()">Recommend Plot for CSV</button>
+    <div id="recommendation"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+  <script>
+    let myChart;
+
+    function generatePlot() {
+      if (myChart) {
+        myChart.destroy();
+      }
+
+      var dataInput = document.getElementById('data-input').value;
+      var data = dataInput.split(',').map(function(item) {
+        return parseInt(item);
+      });
+
+      var plotType = document.getElementById('plot-type').value;
+      var xAxisLabel = document.getElementById('x-label').value;
+      var yAxisLabel = document.getElementById('y-label').value;
+
+      var ctx = document.getElementById('myChart').getContext('2d');
+      myChart = new Chart(ctx, {
+        type: plotType,
+        data: {
+          labels: Array.from(Array(data.length).keys()),
+          datasets: [{
+            label: 'Data',
+            data: data,
+            backgroundColor: getBackgroundColor(plotType, data.length),
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1,
+          }]
+        },
+        options: {
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: xAxisLabel
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: yAxisLabel
+              },
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const csvData = e.target.result;
+        const dataArray = csvData.split('\n');
+        
+        // Extracting numeric values from CSV data
+        const data = dataArray.map(row => {
+          const rowValues = row.split(',').map(val => parseInt(val.trim()));
+          return rowValues.filter(val => !isNaN(val)); // Filter out non-numeric values
+        });
+
+        // Flatten the array
+        const flattenedData = data.reduce((acc, val) => acc.concat(val), []);
+
+        document.getElementById('data-input').value = flattenedData.join(',');
+        generatePlot();
+      }
+      reader.readAsText(file);
+    }
+
+    function summarizePlot() {
+      if (!myChart) return;
+
+      const xAxisLabel = myChart.options.scales.x.title.text;
+      const yAxisLabel = myChart.options.scales.y.title.text;
+
+      const data = myChart.data.datasets[0].data;
+      const sum = data.reduce((acc, curr) => acc + curr, 0);
+      const average = sum / data.length;
+      const max = Math.max(...data);
+      const min = Math.min(...data);
+
+      const plotType = document.getElementById('plot-type').value;
+
+      let plotDescription = '';
+
+      switch (plotType) {
+        case 'bar':
+          plotDescription = 'This plot represents data using bars, with each bar corresponding to a value.';
+          break;
+        case 'line':
+          plotDescription = 'This plot represents data using lines connecting individual data points.';
+          break;
+        case 'radar':
+          plotDescription = 'This plot displays data points in a radial manner, with each axis representing a different variable.';
+          break;
+        case 'doughnut':
+          plotDescription = 'This plot represents data using concentric circles, with each segment corresponding to a value.';
+          break;
+        case 'pie':
+          plotDescription = 'This plot represents data using slices of a circle, with each slice corresponding to a value.';
+          break;
+        case 'polarArea':
+          plotDescription = 'This plot represents data using concentric circles, with each circle corresponding to a different category.';
+          break;
+        default:
+          plotDescription = 'This plot represents data using a graphical representation, but the specific type is not specified.';
+      }
+
+      const summaryText = `${plotDescription} The X-axis is labeled "${xAxisLabel}", indicating the variable on the horizontal axis. The Y-axis is labeled "${yAxisLabel}", indicating the variable on the vertical axis. The total sum of the data points is ${sum}, with an average value of ${average}. The maximum value observed is ${max}, while the minimum value observed is ${min}.`;
+
+      document.getElementById('summary').innerText = summaryText;
+    }
+
+    function recommendPlot() {
+      const dataInput = document.getElementById('data-input').value;
+      const data = dataInput.split(',').map(item => parseFloat(item.trim()));
+
+      // Count the number of numeric and non-numeric values
+      let numericCount = 0;
+      let nonNumericCount = 0;
+
+      data.forEach(item => {
+        if (!isNaN(item)) {
+          numericCount++;
+        } else {
+          nonNumericCount++;
+        }
+      });
+
+      // Determine the ratio of numeric to non-numeric values
+      const total = numericCount + nonNumericCount;
+      const numericRatio = numericCount / total;
+
+      // Recommend plot based on ratio
+      let recommendationText = '';
+      if (numericRatio > 0.5) {
+        recommendationText = 'Based on the CSV data, a bar or line plot is recommended.';
+      } else {
+        recommendationText = 'Based on the CSV data, a pie or doughnut plot is recommended.';
+      }
+
+      document.getElementById('recommendation').innerText = recommendationText;
+    }
+
+    // Helper functions for generating random colors and getting background colors
+    function getBackgroundColor(plotType, length) {
+      switch (plotType) {
+        case 'bar':
+        case 'line':
+        case 'radar':
+          return Array.from({ length: length }, () => getRandomColor());
+        case 'doughnut':
+        case 'pie':
+        case 'polarArea':
+          return Array.from({ length: length }, () => getRandomColor());
+        default:
+          return 'rgba(54, 162, 235, 0.2)';
+      }
+    }
+
+    function getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+  </script>
+</body>
+</html>

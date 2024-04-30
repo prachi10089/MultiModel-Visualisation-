@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multimodal Visualization</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url(https://blog.adobe.com/en/publish/2024/02/28/media_128dbf8fdfc2c9f1fa579c22d134ebc0e0664a96e.jpeg?width=1200&format=pjpg&optimize=medium);
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .container {
+    max-width: 700px;
+    height: 400px;
+    padding: 20px;
+    background-color: #394b58;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0);
+  }
+  h1 {
+    text-align: center;
+    color: #ffffff;
+  }
+  #button-container {
+    text-align: center;
+  }
+  button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #00a1b3;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #08606a;
+  }
+  p {
+    margin-top: 20px;
+    color: #fffcfc;
+  }
+  .logo {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="logo">
+        <img height="100px" width="100px" src="image.jpg" alt="Website Logo">
+      </div>    
+  <h1>Multimodal Visualization</h1>
+  <p style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Our website serves as a comprehensive hub for data visualization and analysis. It offers users a range of tools to explore their data effectively. Upon uploading their datasets, users can easily generate various visualizations to identify patterns and trends. Automated plot generation simplifies the process, while a summary option distills key insights for quick understanding. Additionally, a recommendation system suggests suitable plots based on data characteristics, enhancing user experience. For those preferring alternative learning methods, the platform offers video summaries for a more engaging experience. An OpenAI chatbot provides instant support, ensuring users can navigate the platform effortlessly and get answers to their queries promptly.</p>
+  <div id="button-container">
+    <button id="chatbot-btn" onclick="window.location.href = 'index.html';">Chatbot</button>
+    <button id="plot-btn" onclick="window.location.href = 'plot.html';">Generate Plot</button>
+    <button id="language-btn" onclick="window.location.href = 'voice_text_converter.html';">Switch Language</button>
+    
+  </div>
+  <!-- Include your JavaScript for button functionalities here -->
+</div>
+</body>
+</html>
